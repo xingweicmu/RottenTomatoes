@@ -1,15 +1,11 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,35 +48,6 @@ public class HttpRetriever {
         }
 
         return null;
-//        String result = "";
-//        try {
-//            URL obj = new URL(url);
-//            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-//
-//            // optional default is GET
-//            con.setRequestMethod("GET");
-//
-//            int responseCode = con.getResponseCode();
-//            Log.d("facebook##", "Response Code : " + responseCode);
-//
-//            BufferedReader in = new BufferedReader(
-//                    new InputStreamReader(con.getInputStream()));
-//            String inputLine;
-//            StringBuffer response = new StringBuffer();
-//
-//            while ((inputLine = in.readLine()) != null) {
-//                response.append(inputLine);
-//            }
-//            in.close();
-//
-//            //print result
-//            Log.d("facebook##", response.toString());
-//            result = response.toString();
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-
     }
 
     public InputStream retrieveStream(String url) {

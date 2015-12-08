@@ -1,4 +1,4 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.utils;
 
 import java.io.FilterInputStream;
 import java.io.IOException;

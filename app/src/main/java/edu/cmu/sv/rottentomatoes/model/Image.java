@@ -1,4 +1,4 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.model;
 
 import java.io.Serializable;
 

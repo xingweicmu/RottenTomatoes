@@ -1,4 +1,4 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,30 +10,29 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.cmu.sv.rottentomatoes.controller.GenericSeeker;
+import edu.cmu.sv.rottentomatoes.controller.MovieSeeker;
+import edu.cmu.sv.rottentomatoes.R;
+import edu.cmu.sv.rottentomatoes.model.Movie;
 
 public class MainActivity extends Activity {
 
@@ -66,6 +65,11 @@ public class MainActivity extends Activity {
         });
 
         searchEditText.setOnFocusChangeListener(new DftTextOnFocusListener(getString(R.string.search)));
+
+        // Used to clear the sharedPreference - ONLY used for dev
+//        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+//        editor.clear();
+//        editor.commit();
 
     }
     private class PerformMovieSearchTask extends AsyncTask<String, Void, List<Movie>> {
@@ -113,8 +117,7 @@ public class MainActivity extends Activity {
                     if (result!=null) {
 
                         publicMovieList = result;
-//                        Intent intent = new Intent(MainActivity.this, MoviesListActivity.class);
-//                        startActivity(intent);
+
                         ArrayAdapter<Movie> moviesAdapter = new MoviesAdapter(MainActivity.this, R.layout.list_row, result);
                         listView.setAdapter(moviesAdapter);
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -198,6 +201,7 @@ public class MainActivity extends Activity {
                 progressDialog.setOnCancelListener(new CancelTaskOnCancelListener(task));
             }
             else{
+                // If no network
                 new AlertDialog.Builder(MainActivity.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Alert")
@@ -239,7 +243,7 @@ public class MainActivity extends Activity {
     }
 
     public void longToast(CharSequence message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 

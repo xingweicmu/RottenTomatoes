@@ -1,17 +1,14 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.utils;
 
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+
+import edu.cmu.sv.rottentomatoes.model.Image;
+import edu.cmu.sv.rottentomatoes.model.Movie;
 
 /**
  * Created by xingwei on 12/7/15.
@@ -22,7 +19,6 @@ public class jsonParser {
         ArrayList<Movie> movies = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
-            //                JSONArray array = null;
 
             if (jsonObject != null) {
                 JSONArray array = jsonObject.getJSONArray("movies");
@@ -75,7 +71,7 @@ public class jsonParser {
                     // original
                     String originalUrl = posters.getString("original");
                     Image originalImage = new Image();
-                    originalImage.url = detailUrl;
+                    originalImage.url = originalUrl;
                     originalImage.type = Image.TYPE_POSTER;
                     originalImage.size = Image.SIZE_ORIGINAL;
                     imageList.add(originalImage);

@@ -1,4 +1,4 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,9 +21,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import edu.cmu.sv.rottentomatoes.R;
+import edu.cmu.sv.rottentomatoes.model.Movie;
+import edu.cmu.sv.rottentomatoes.utils.FlushedInputStream;
+import edu.cmu.sv.rottentomatoes.utils.HttpRetriever;
 
 /**
  * Created by xingwei on 12/7/15.
@@ -125,11 +129,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
     private LinkedHashMap<String, Bitmap> bitmapCache = new LinkedHashMap<String, Bitmap>();
 
     private void addBitmapToCache(String url, Bitmap bitmap) {
-//        if (bitmap != null) {
-//            synchronized (bitmapCache) {
-//                bitmapCache.put(url, bitmap);
-//            }
-//        }
+
         // Write image to external storage
         url = url.replace("/", "").replace(":", "").replace(".","");
         File sdCardDirectory = Environment.getExternalStorageDirectory();
@@ -165,16 +165,6 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
     private Bitmap fetchBitmapFromCache(String url) {
 
-//        synchronized (bitmapCache) {
-//            final Bitmap bitmap = bitmapCache.get(url);
-//            if (bitmap != null) {
-//                // Bitmap found in cache
-//                // Move element to first position, so that it is removed last
-//                bitmapCache.remove(url);
-//                bitmapCache.put(url, bitmap);
-//                return bitmap;
-//            }
-//        }
         url = url.replace("/", "").replace(":", "").replace(".","");
         Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/movies/"+url+".png");
         if(bitmap != null)

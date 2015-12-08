@@ -1,7 +1,9 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import edu.cmu.sv.rottentomatoes.model.Image;
 
 /**
  * Created by xingwei on 12/7/15.

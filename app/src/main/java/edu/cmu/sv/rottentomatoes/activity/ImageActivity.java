@@ -1,20 +1,27 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
+
+import edu.cmu.sv.rottentomatoes.R;
+import edu.cmu.sv.rottentomatoes.utils.FlushedInputStream;
+import edu.cmu.sv.rottentomatoes.utils.HttpRetriever;
 
 /**
  * Created by xingwei on 12/7/15.
@@ -22,7 +29,6 @@ import java.util.LinkedHashMap;
 public class ImageActivity extends Activity {
 
     private HttpRetriever httpRetriever = new HttpRetriever();
-//    private String url = "http://content6.flixster.com/movie/11/13/43/11134356_tmb.jpg";
     private String url = MainActivity.selectedOne.imagesList.get(0).url;
     private ImageView imageView;
     int counter = 0;
@@ -77,17 +83,10 @@ public class ImageActivity extends Activity {
 
     private Bitmap fetchBitmapFromCache(String url) {
 
-        synchronized (bitmapCache) {
-            final Bitmap bitmap = bitmapCache.get(url);
-            if (bitmap != null) {
-                // Bitmap found in cache
-                // Move element to first position, so that it is removed last
-                bitmapCache.remove(url);
-                bitmapCache.put(url, bitmap);
-                return bitmap;
-            }
-        }
-
+        url = url.replace("/", "").replace(":", "").replace(".","");
+        Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/movies/"+url+".png");
+        if(bitmap != null)
+            return bitmap;
         return null;
 
     }
@@ -132,10 +131,35 @@ public class ImageActivity extends Activity {
     private LinkedHashMap<String, Bitmap> bitmapCache = new LinkedHashMap<String, Bitmap>();
 
     private void addBitmapToCache(String url, Bitmap bitmap) {
-        if (bitmap != null) {
-            synchronized (bitmapCache) {
-                bitmapCache.put(url, bitmap);
-            }
+
+        // Write image to external storage
+        url = url.replace("/", "").replace(":", "").replace(".","");
+        File sdCardDirectory = Environment.getExternalStorageDirectory();
+        File image = new File(sdCardDirectory, "/movies/"+url+".png");
+        boolean success = false;
+
+        // Encode the file as a PNG image.
+        FileOutputStream outStream;
+        try {
+
+            outStream = new FileOutputStream(image);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+
+            outStream.flush();
+            outStream.close();
+            success = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (success) {
+            Toast.makeText(ImageActivity.this, "Image saved with success",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(ImageActivity.this,
+                    "Error during image saving", Toast.LENGTH_SHORT).show();
         }
     }
 

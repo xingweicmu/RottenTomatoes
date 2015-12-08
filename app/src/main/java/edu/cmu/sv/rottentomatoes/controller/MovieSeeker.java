@@ -1,15 +1,18 @@
-package edu.cmu.sv.rottentomatoes;
+package edu.cmu.sv.rottentomatoes.controller;
 
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import edu.cmu.sv.rottentomatoes.model.Movie;
 
 /**
  * Created by xingwei on 12/7/15.
  */
 public class MovieSeeker extends GenericSeeker<Movie> {
 
-    private static final String MOVIE_SEARCH_PATH = "Movie.search/";
+    private static final String MOVIE_SEARCH_PATH = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=9txsnh3qkb5ufnphhqv5tv5z&q=";
+    private static final String PAGE_LIMIT = "s&page_limit=6";
 
     public ArrayList<Movie> find(String query) {
         ArrayList<Movie> moviesList = retrieveMoviesList(query);
@@ -22,13 +25,13 @@ public class MovieSeeker extends GenericSeeker<Movie> {
     }
 
     private ArrayList<Movie> retrieveMoviesList(String query) {
-//        String url = constructSearchUrl(query);
+        // Contruct search URL
         query = query.replace(" ", "%20");
-        String url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=9txsnh3qkb5ufnphhqv5tv5z&q="+query+"s&page_limit=6";
+        String url = MOVIE_SEARCH_PATH + query + PAGE_LIMIT;
+
         String response = httpRetriever.retrieve(url);
         Log.d(getClass().getSimpleName(), response);
         return jsonParser.parseMoviesResponse(response);
-//        return new ArrayList<Movie>();
     }
 
     @Override
