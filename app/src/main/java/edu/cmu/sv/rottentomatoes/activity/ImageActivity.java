@@ -62,8 +62,36 @@ public class ImageActivity extends Activity {
                 if(counter >= MainActivity.selectedOne.imagesList.size())
                     counter = 0;
                 url = MainActivity.selectedOne.imagesList.get(counter).url;
+                String type = MainActivity.selectedOne.imagesList.get(counter).size;
 
-                Toast.makeText(ImageActivity.this, url, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ImageActivity.this, type+":"+url, Toast.LENGTH_SHORT).show();
+                if (url!=null) {
+                    Bitmap bitmap = fetchBitmapFromCache(url);
+                    if (bitmap==null) {
+                        new BitmapDownloaderTask(imageView).execute(url);
+                    }
+                    else {
+                        imageView.setImageBitmap(bitmap);
+                    }
+                }
+                else {
+                    imageView.setImageBitmap(null);
+                }
+            }
+        });
+
+        Button prevButton = (Button)findViewById(R.id.previousButton);
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // set url a new value
+                counter--;
+                if(counter < 0)
+                    counter = MainActivity.selectedOne.imagesList.size() - 1;
+                url = MainActivity.selectedOne.imagesList.get(counter).url;
+                String type = MainActivity.selectedOne.imagesList.get(counter).size;
+
+                Toast.makeText(ImageActivity.this, type+":"+url, Toast.LENGTH_SHORT).show();
                 if (url!=null) {
                     Bitmap bitmap = fetchBitmapFromCache(url);
                     if (bitmap==null) {

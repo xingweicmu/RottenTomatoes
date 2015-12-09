@@ -6,15 +6,16 @@
 
     <ImageView
         android:id="@+id/movie_thumb_icon"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="fill_parent"
-        android:layout_marginRight="6dip"/>
+        android:layout_marginRight="10dip"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dip"
         android:layout_weight="1"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_marginTop="6dip">
 
         <TextView
             android:id="@+id/name_text_view"
